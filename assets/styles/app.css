@@ -1,3 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;400;700&display=swap');
+
+:root {
+    --neon-pink: #FF00E5;
+    --neon-blue: #00D1FF;
+    --neon-green: #39FF14;
+}
+
+/* 1. RESET GLOBAL */
 body {
-    background-color: skyblue;
+    margin: 0;
+    padding: 0;
+    font-family: 'Press Start 2P', cursive;
+    background: url('../image/fond1.png') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    min-height: 100vh;
+}
+
+h1, h2 {
+    font-family: 'Press Start 2P', cursive;
+    color: white;
+}
+
+/* 3. LE PARAGRAPHE EN ROBOTO */
+p, .welcome-text {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.texte_accueil {
+    text-align: center;
+    margin-top: 25px;
+}
+
+/* 4. LES BOUTONS (Déjà fonctionnels chez toi) */
+.btn-neon {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.7rem;
+    padding: 10px 25px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.btn-neon-pink { 
+    color: var(--neon-pink); 
+    border: 2px solid var(--neon-pink); 
+    box-shadow: 0 0 10px rgba(255, 0, 229, 0.4); 
+}
+
+.btn-neon-pink:hover { 
+    background: var(--neon-pink); 
+    color: white; 
+}
+
+.btn-neon-blue { 
+    color: var(--neon-blue); 
+    border: 2px solid var(--neon-blue); 
+    box-shadow: 0 0 10px rgba(0, 209, 255, 0.4); 
+}
+
+.btn-neon-blue:hover { 
+    background: var(--neon-blue); 
+    color: white; 
+}
+
+.btn-neon-green { 
+    color: var(--neon-green); 
+    border: 2px solid var(--neon-green); 
+    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4); 
+    font-size: 1rem; 
+}
+
+.btn-neon-green:hover { 
+    background: var(--neon-green); 
+    color: #1a1a1a; 
+}
+
+/* 5. DIVERS */
+.pixelated { 
+    image-rendering: pixelated; 
+}
+
+header { 
+    background: rgba(0, 0, 0, 0.2); 
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
+}
+
+.main-chest { 
+    max-width: 250px; 
+    filter: drop-shadow(0 0 20px rgba(0, 209, 255, 0.3)); 
 }

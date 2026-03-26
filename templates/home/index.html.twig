@@ -1,0 +1,28 @@
+{# templates/home/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section class="container-fluid text-center py-5 d-flex flex-column align-items-center justify-content-center" style="min-height: 80vh;">
+    
+    <div class="welcome-text mb-5 px-3">
+        <h1>BIENVENUE SUR LOOTSHELF !</h1>
+        <h2>VOTRE ÉTAGÈRE VIRTUELLE POUR VOS JEUX</h2>
+        
+        <p class="texte_accueil" style="max-width: 650px;">
+            COLLECTIONNEZ, ORGANISEZ ET SUIVEZ VOTRE PROGRESSION DANS VOS JEUX PRÉFÉRÉS. 
+            CRÉEZ VOTRE COMPTE POUR COMMENCER !
+        </p>
+    </div>
+
+    <div class="chest-area mb-5">
+        <img src="{{ asset('image/coffre_ferme.png') }}" alt="Coffre" class="pixelated img-fluid main-chest">
+    </div>
+
+    <div class="cta-area">
+        <a href="#" class="btn-neon btn-neon-green px-5 py-3">
+            VOIR LES ÉTAGÈRES
+        </a>
+    </div>
+
+</section>
+{% endblock %}
