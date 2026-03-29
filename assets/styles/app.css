@@ -1,96 +1,191 @@
+/* 1. IMPORTS & VARIABLES */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;400;700&display=swap');
 
 :root {
     --neon-pink: #FF00E5;
     --neon-blue: #00D1FF;
     --neon-green: #39FF14;
+    --dark-purple: #1A0B2E;
 }
 
-/* 1. RESET GLOBAL */
+/* 2. BASE & TYPOGRAPHIE */
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Press Start 2P', cursive;
+    font-family: 'Press Start 2P', cursive !important;
     background: url('../image/fond1.png') no-repeat center center fixed;
     background-size: cover;
     color: white;
-    min-height: 100vh;
+    /* On force le body à ne JAMAIS scroller */
+    height: 100vh;
+    overflow: hidden; 
+}
+
+.app-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* L'app fait pile la hauteur de l'écran */
+}
+
+.main-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centre tout le contenu verticalement */
+    overflow: hidden;
 }
 
 h1, h2 {
-    font-family: 'Press Start 2P', cursive;
-    color: white;
+    transform: translateY(-40px);
 }
 
-/* 3. LE PARAGRAPHE EN ROBOTO */
-p, .welcome-text {
-    font-family: 'Roboto', sans-serif;
+h1 {
+    font-family: 'Press Start 2P', cursive !important;
+    color: white !important;
+    text-align: center;
+    font-size: 1.8rem;
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+/* 2. LE SOUS-TITRE (H2) */
+h2 {
+    font-family: 'Press Start 2P', cursive !important;
+    color: white !important;
+    text-align: center;
+    font-size: 1rem;
+    margin-top: 0px;    
+    margin-bottom: 40px;
+}
+
+/* 3. LE PARAGRAPHE (ROBOTO) */
+.texte-accueil {
+    font-family: 'Roboto', sans-serif !important;
     font-size: 1.1rem;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.9);
-}
-
-.texte_accueil {
     text-align: center;
-    margin-top: 25px;
+    max-width: 800px; 
+    margin-top: 50px;    
+    margin-left: auto;  
+    margin-right: auto; 
+    margin-bottom: 0px; 
 }
 
-/* 4. LES BOUTONS (Déjà fonctionnels chez toi) */
+/* ========================================================== */
+/* 3. LAYOUT (HEADER & FOOTER) */
+.head {
+    background: var(--dark-purple);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    padding: 0 30px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+/* 4. SECTION ACCUEIL (STRUCTURE) */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* On enlève le min-height: 80vh qui était trop grand */
+    flex: 1; 
+    padding: 10px 20px;
+}
+
+.welcome-text-container {
+    margin-top: -20px; 
+    margin-bottom: 10px;
+}
+
+.chest-area {
+    /* Espace autour du coffre */
+    margin-top: 20px; 
+    margin-bottom: 20px;
+}
+
+/* 5. LES BOUTONS NÉONS */
 .btn-neon {
-    font-family: 'Press Start 2P', cursive;
+    text-decoration: none !important;
+    font-family: 'Press Start 2P', cursive !important;
     font-size: 0.7rem;
-    padding: 10px 25px;
-    border-radius: 4px;
-    text-decoration: none;
-    display: inline-block;
-    transition: 0.3s;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+    border: 2px solid;
+    color: white !important;
+    background: linear-gradient(to bottom, #4B0082, #001F3F) !important;
 }
 
-.btn-neon-pink { 
-    color: var(--neon-pink); 
-    border: 2px solid var(--neon-pink); 
-    box-shadow: 0 0 10px rgba(255, 0, 229, 0.4); 
+/* --- BOUTON S'INSCRIRE --- */
+.btn-neon-pink {
+    border-color: var(--neon-pink) !important;
 }
 
-.btn-neon-pink:hover { 
-    background: var(--neon-pink); 
-    color: white; 
+.btn-neon-pink:hover {
+    color: #FF007F !important; /* Rose vif au survol */
+    box-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+    transform: scale(1.05);
 }
 
-.btn-neon-blue { 
-    color: var(--neon-blue); 
-    border: 2px solid var(--neon-blue); 
-    box-shadow: 0 0 10px rgba(0, 209, 255, 0.4); 
+/* --- BOUTON SE CONNECTER --- */
+.btn-neon-blue {
+    border-color: var(--neon-blue) !important;
 }
 
-.btn-neon-blue:hover { 
-    background: var(--neon-blue); 
-    color: white; 
+.btn-neon-blue:hover {
+    color: #24E5FF !important; /* Bleu clair au survol */
+    box-shadow: 0 0 15px rgba(36, 229, 255, 0.5);
+    transform: scale(1.05);
 }
 
-.btn-neon-green { 
-    color: var(--neon-green); 
-    border: 2px solid var(--neon-green); 
-    box-shadow: 0 0 15px rgba(57, 255, 20, 0.4); 
-    font-size: 1rem; 
+/* --- BOUTON VOIR LES ÉTAGÈRES --- */
+.btn-neon-green {
+    font-size: 1rem; /* Un peu plus grand pour l'accueil */
+    border-color: var(--neon-green) !important;
 }
 
-.btn-neon-green:hover { 
-    background: var(--neon-green); 
-    color: #1a1a1a; 
+.btn-neon-green:hover {
+    color: #00FF00 !important; /* Vert pur au survol */
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+    transform: scale(1.05);
 }
 
-/* 5. DIVERS */
+/* 6. DIVERS */
 .pixelated { 
     image-rendering: pixelated; 
 }
 
-header { 
-    background: rgba(0, 0, 0, 0.2); 
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
+.main-chest { 
+    max-width: 300px; /* Passage de 250 à 180 pour gagner de la place */
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(0, 209, 255, 0.3));
+    animation: float 3s ease-in-out infinite; 
 }
 
-.main-chest { 
-    max-width: 250px; 
-    filter: drop-shadow(0 0 20px rgba(0, 209, 255, 0.3)); 
+.foot {
+    text-align: center;
+    background: var(--dark-purple); 
+    border-top: 2px solid rgba(255, 255, 255, 0.1); 
 }
+
+.text-foot {
+    color: white;
+    font-family: 'Roboto', sans-serif !important;
+    margin: 15px;
+    display: inline-block;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+

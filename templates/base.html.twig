@@ -5,35 +5,32 @@
         <meta charset="UTF-8">
         <title>{% block title %}LootShelf{% endblock %}</title>
         <link rel="icon" href="{{ asset('favicon.ico') }}">
-        {# La Google Font est maintenant importée dans le CSS, on peut enlever la ligne d'ici si tu veux, ou la laisser, ça ne gêne pas #}
         
         {% block stylesheets %}
             {{ importmap('app') }}
         {% endblock %}
     </head>
     <body>
-        <div class="app-wrapper d-flex flex-column min-vh-100">
-            <header class="container-fluid d-flex justify-content-between align-items-center py-3 px-4">
+        <div class="app-wrapper">
+            <header class="head">
                 <div class="logo-area">
                     <a href="{{ path('app_home') }}">
-                        {# On utilise notre nouvelle image de logo exportée de Figma #}
-                        <img src="{{ asset('image/logo_lootshelf.png') }}" alt="LootShelf" class="pixelated" height="40">
+                        <img src="{{ asset('image/logo_lootshelf.png') }}" alt="LootShelf" class="pixelated" height="55">
                     </a>
                 </div>
                 
-                <nav class="d-flex flex-column flex-md-row gap-3 mt-3 mt-md-0">
-                    {# On applique nos classes custom btn-neon et btn-neon-color #}
-                    <a href="#" class="btn-neon btn-neon-pink">S'INSCRIRE</a>
-                    <a href="#" class="btn-neon btn-neon-blue">SE CONNECTER</a>
+                <nav class="nav-links">
+                    <a href="#" class="btn-neon btn-neon-pink rounded-3 px-4 py-2">S'INSCRIRE</a>
+                    <a href="#" class="btn-neon btn-neon-blue rounded-3 px-4 py-2">SE CONNECTER</a>
                 </nav>
             </header>
 
-            <main class="flex-grow-1">
+            <main class="main-content">
                 {% block body %}{% endblock %}
             </main>
 
-            <footer class="text-center py-3 mt-auto bg-dark bg-opacity-25 border-top border-secondary border-opacity-25">
-                <p class="mb-0 text-white-50" style="font-size: 0.6rem;">2026 LootShelf | Powered by Alexis BAIL</p>
+            <footer class="foot">
+                <p class="text-foot">2026 LootShelf | Powered by Alexis BAIL</p>
             </footer>
         </div>
 
