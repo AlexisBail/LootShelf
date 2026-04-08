@@ -26,12 +26,6 @@ class RegistrationFormType extends AbstractType
                 'widget' => 'single_text',
             ])
             ->add('email')
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue(message: 'Vous devez accepter les conditions.'),
-                ],
-            ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
@@ -42,6 +36,12 @@ class RegistrationFormType extends AbstractType
                         minMessage: 'Votre mot de passe doit faire au moins {{ limit }} caractères',
                         max: 4096
                     ),
+                ],
+            ])
+            ->add('agreeTerms', CheckboxType::class, [
+                'mapped' => false,
+                'constraints' => [
+                    new IsTrue(message: 'Vous devez accepter les conditions.'),
                 ],
             ])
         ;

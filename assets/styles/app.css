@@ -189,3 +189,154 @@ h2 {
     100% { transform: translateY(0px); }
 }
 
+/* ========================================================== */
+/* 7. PAGE REGISTER (INSCRIPTION) */
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 20px;
+    margin-top: -30px;
+}
+
+.chest-container {
+    margin-bottom: 15px;
+}
+
+.pixel-chest {
+    max-width: 150px;
+    height: auto;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.2));
+    animation: float 3s ease-in-out infinite;
+}
+
+.main-title {
+    font-size: 1.4rem !important;
+    margin-bottom: 5px;
+    transform: none;
+    text-align: center;
+}
+
+.subtitle {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* --- STRUCTURE DU FORMULAIRE --- */
+.form-fields {
+    width: 100%;
+    max-width: 550px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espace identique entre chaque bloc */
+}
+
+/* On nettoie les marges pour que seul le GAP compte */
+.form-fields > input, 
+.form-fields > div {
+    margin: 0 !important; 
+}
+
+.input-row {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+}
+
+/* --- STYLE DES INPUTS --- */
+.input-neon {
+    width: 100%;
+    height: 50px;
+    padding: 0 25px;
+    font-family: 'Roboto', sans-serif !important;
+    font-size: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 3px solid white;
+    border-radius: 50px;
+    box-sizing: border-box;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.input-neon:focus {
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 15px var(--neon-blue);
+    transform: scale(1.02);
+}
+
+/* --- CHECKBOX (TERMS) --- */
+.terms-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.5rem;
+    color: white;
+    margin-top: 5px !important; /* Petit ajustement pour la coller un peu moins au bouton */
+}
+
+.terms-wrapper input[type="checkbox"] {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--neon-blue);
+}
+
+/* --- BOUTON DE CONFIRMATION --- */
+.btn-confirm-neon {
+    align-self: center;
+    margin-top: 10px;
+    padding: 15px 40px;
+    font-family: 'Press Start 2P', cursive !important;
+    font-size: 0.8rem;
+    color: white;
+    background: #2E0094;
+    border: 3px solid var(--neon-green);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm-neon:hover {
+    background: #3D00C4;
+    box-shadow: 0 0 20px var(--neon-green);
+    transform: scale(1.05);
+}
+
+/* --- PIED DE PAGE --- */
+.footer-text {
+    text-align: center;
+    margin-top: 20px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.45rem;
+    line-height: 1.5;
+}
+
+.link-neon {
+    color: var(--neon-pink);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.link-neon:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 5px var(--neon-pink);
+}
+
+/* Erreurs Symfony */
+.form-fields ul {
+    list-style: none;
+    padding: 0;
+    margin: -10px 0 0 0;
+    color: #ff4444;
+    font-size: 0.6rem;
+    text-align: center;
+}

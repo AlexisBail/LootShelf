@@ -1,23 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}LootShelf - Rejoindre la quête{% endblock %}
 
+{# On garde ton header existant, on ne modifie que le body #}
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+    {{ form_start(registrationForm, {'attr': {'class': 'register-form'}}) }}
+        <div class="main-container">
+            <div class="chest-container">
+                {# Assure-toi d'avoir ton image de coffre dans public/images/ #}
+                <img src="{{ asset('image/coffre_ferme.png') }}" alt="Coffre LootShelf" class="pixel-chest">
+            </div>
 
-    <h1>Register</h1>
+            <h1 class="main-title">REJOIGNER LA QUÊTE !</h1>
+            <p class="subtitle">INSCRIVEZ VOUS POUR CRÉER VOTRE ÉTAGÈRE</p>
 
-    {{ form_errors(registrationForm) }}
+            <div class="form-fields">
+    {# Ligne Prénom / Nom #}
+    <div class="input-row">
+        {{ form_widget(registrationForm.prenom, {'attr': {'placeholder': 'Prénom', 'class': 'input-neon'}}) }}
+        {{ form_widget(registrationForm.nom, {'attr': {'placeholder': 'Nom', 'class': 'input-neon'}}) }}
+    </div>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    {# Les autres champs avec le même espacement #}
+    {{ form_widget(registrationForm.pseudo, {'attr': {'placeholder': 'Pseudo', 'class': 'input-neon'}}) }}
+    {{ form_widget(registrationForm.email, {'attr': {'placeholder': 'Email', 'class': 'input-neon'}}) }}
+    {{ form_widget(registrationForm.plainPassword, {'attr': {'placeholder': 'Mot de passe', 'class': 'input-neon'}}) }}
 
-        <button type="submit" class="btn">Register</button>
+    {# On affiche la checkbox proprement ici #}
+    <div class="terms-wrapper">
+        {{ form_widget(registrationForm.agreeTerms) }}
+        <label for="{{ registrationForm.agreeTerms.vars.id }}">J'ACCEPTE LES CONDITIONS</label>
+    </div>
+
+    {# On ne cache QUE la date de naissance qui est automatique #}
+    <div style="display:none">
+        {{ form_widget(registrationForm.date_de_naissance, {'value': '2000-01-01'}) }}
+    </div>
+</div>
+
+            <button type="submit" class="btn-confirm-neon">
+                CONFIRMER L'INSCRIPTION
+            </button>
+
+            <p class="footer-text">
+                VOUS AVEZ DÉJÀ UN COMPTE ? <a href="#" class="link-neon">SE CONNECTER.</href=>
+            </p>
+        </div>
     {{ form_end(registrationForm) }}
 {% endblock %}
