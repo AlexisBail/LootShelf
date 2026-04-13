@@ -1,52 +1,65 @@
 import './stimulus_bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
 import './styles/app.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 
-document.addEventListener('DOMContentLoaded', () => {
+// --- 1. FONCTIONS D'OUVERTURE / FERMETURE ---
+function openModal() {
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.style.display = 'flex'; // Toujours flex pour le centrage
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById('loginModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// --- 2. ÉCOUTE GLOBALE DES CLICS (Anti-Bug Symfony Turbo) ---
+document.addEventListener('click', (e) => {
     
-    // 1. On récupère les éléments
-    const loginModal = document.getElementById('loginModal');
-    const loginTrigger = document.getElementById('login-trigger');
-    const closeBtn = document.querySelector('.close-modal');
-
-    // 2. On vérifie que TOUS les éléments existent sur la page actuelle
-    // (Cela évite des erreurs sur les pages où la modale n'est pas présente)
-    if (loginModal && loginTrigger && closeBtn) {
-
-        // Ouverture de la modale au clic sur "Se connecter"
-        loginTrigger.addEventListener('click', (e) => {
-            // e.preventDefault() est crucial ici : 
-            // il empêche le navigateur de suivre le lien href="/login"
-            e.preventDefault();
-            loginModal.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Optionnel : empêche le scroll du fond
-        });
-
-        // Fermeture avec la croix
-        closeBtn.addEventListener('click', () => {
-            closeModal();
-        });
-
-        // Fermeture au clic à l'extérieur de la boîte blanche
-        window.addEventListener('click', (e) => {
-            if (e.target === loginModal) {
-                closeModal();
-            }
-        });
-
-        // Fonction pour fermer proprement
-        function closeModal() {
-            loginModal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Réactive le scroll
+    // Si on clique sur le bouton "SE CONNECTER"
+    const loginTrigger = e.target.closest('#login-trigger');
+    if (loginTrigger) {
+        
+        // 🚀 NOUVEAUTÉ : Vérification de la page actuelle
+        if (window.location.pathname !== '/home' && window.location.pathname !== '/') {
+            // On n'est PAS sur l'accueil. On arrête le script ici.
+            // Le navigateur va suivre le lien naturellement vers /home#login
+            return; 
         }
+
+        // Si on est déjà sur l'accueil, on bloque le rechargement et on ouvre la boîte
+        e.preventDefault();
+        openModal();
+    }
+
+    // Si on clique sur la croix "X"
+    const closeBtn = e.target.closest('.close-modal');
+    if (closeBtn) {
+        closeModal();
+    }
+
+    // Si on clique dans le vide (sur le fond sombre)
+    if (e.target.id === 'loginModal') {
+        closeModal();
     }
 });
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+// --- 3. DÉTECTION DU LIEN (#login) ---
+function checkHash() {
+    if (window.location.hash === '#login') {
+        openModal();
+        // On efface le #login de l'URL pour faire propre
+        history.replaceState(null, null, window.location.pathname);
+    }
+}
+
+// On lance la vérification au chargement normal ET au chargement Turbo
+document.addEventListener('DOMContentLoaded', checkHash);
+document.addEventListener('turbo:load', checkHash);
