@@ -3,17 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UtilisateurRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'Il existe déjà un compte avec cet email')]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -24,15 +23,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -46,24 +39,30 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $date_de_naissance = null;
+    private ?\DateTimeInterface $date_de_naissance = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $date_inscription = null;
+    private ?\DateTimeInterface $date_inscription = null;
 
-    /**
-     * @var Collection<int, UtilisateurJeu>
-     */
-    #[ORM\OneToMany(targetEntity: UtilisateurJeu::class, mappedBy: 'utilisateur')]
-    private Collection $monEtagere;
+    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $temps_de_jeu = null;
 
-    #[ORM\Column]
-    private bool $isVerified = false;
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $statut = null;
 
-    public function __construct()
-    {
-        $this->monEtagere = new ArrayCollection();
-    }
+    #[ORM\Column(type: Types::SMALLINT, nullable: true)]
+    #[Assert\Range(
+        min: 0,
+        max: 5,
+        notInRangeMessage: 'La note doit être comprise entre {{ min }} et {{ max }}'
+    )]
+    private ?int $note = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $date_ajout_jeu = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $platform_jouee = null;
 
     public function getId(): ?int
     {
@@ -78,45 +77,27 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -125,19 +106,11 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
     }
 
-    /**
-     * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
-     */
-    public function __serialize(): array
+    public function eraseCredentials(): void
     {
-        $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
-
-        return $data;
     }
 
     public function getPseudo(): ?string
@@ -148,7 +121,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPseudo(string $pseudo): static
     {
         $this->pseudo = $pseudo;
-
         return $this;
     }
 
@@ -160,7 +132,6 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -172,73 +143,83 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
-    public function getDateDeNaissance(): ?\DateTime
+    public function getDateDeNaissance(): ?\DateTimeInterface
     {
         return $this->date_de_naissance;
     }
 
-    public function setDateDeNaissance(\DateTime $date_de_naissance): static
+    public function setDateDeNaissance(\DateTimeInterface $date_de_naissance): static
     {
         $this->date_de_naissance = $date_de_naissance;
-
         return $this;
     }
 
-    public function getDateInscription(): ?\DateTime
+    public function getDateInscription(): ?\DateTimeInterface
     {
         return $this->date_inscription;
     }
 
-    public function setDateInscription(\DateTime $date_inscription): static
+    public function setDateInscription(\DateTimeInterface $date_inscription): static
     {
         $this->date_inscription = $date_inscription;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, UtilisateurJeu>
-     */
-    public function getMonEtagere(): Collection
+    public function getTempsDeJeu(): ?\DateTimeInterface
     {
-        return $this->monEtagere;
+        return $this->temps_de_jeu;
     }
 
-    public function addMonEtagere(UtilisateurJeu $monEtagere): static
+    public function setTempsDeJeu(?\DateTimeInterface $temps_de_jeu): static
     {
-        if (!$this->monEtagere->contains($monEtagere)) {
-            $this->monEtagere->add($monEtagere);
-            $monEtagere->setUtilisateur($this);
-        }
-
+        $this->temps_de_jeu = $temps_de_jeu;
         return $this;
     }
 
-    public function removeMonEtagere(UtilisateurJeu $monEtagere): static
+    public function getStatut(): ?string
     {
-        if ($this->monEtagere->removeElement($monEtagere)) {
-            // set the owning side to null (unless already changed)
-            if ($monEtagere->getUtilisateur() === $this) {
-                $monEtagere->setUtilisateur(null);
-            }
-        }
+        return $this->statut;
+    }
 
+    public function setStatut(?string $statut): static
+    {
+        $this->statut = $statut;
         return $this;
     }
 
-    public function isVerified(): bool
+    public function getNote(): ?int
     {
-        return $this->isVerified;
+        return $this->note;
     }
 
-    public function setIsVerified(bool $isVerified): static
+    public function setNote(?int $note): static
     {
-        $this->isVerified = $isVerified;
+        $this->note = $note;
+        return $this;
+    }
 
+    public function getDateAjoutJeu(): ?\DateTimeInterface
+    {
+        return $this->date_ajout_jeu;
+    }
+
+    public function setDateAjoutJeu(?\DateTimeInterface $date_ajout_jeu): static
+    {
+        $this->date_ajout_jeu = $date_ajout_jeu;
+        return $this;
+    }
+
+    public function getPlatformJouee(): ?string
+    {
+        return $this->platform_jouee;
+    }
+
+    public function setPlatformJouee(?string $platform_jouee): static
+    {
+        $this->platform_jouee = $platform_jouee;
         return $this;
     }
 }
