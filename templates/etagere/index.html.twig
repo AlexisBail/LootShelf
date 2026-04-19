@@ -4,55 +4,60 @@
 {% block title %}Mon Étagère - LootShelf{% endblock %}
 
 {% block body %}
-{# Ce conteneur va annuler le centrage de main-content et prendre toute la place #}
 <div class="shelf-layout">
     
-    {# --- 1. BARRE LATÉRALE (SIDEBAR) --- #}
+    {# --- 1. SIDEBAR (À GAUCHE) --- #}
     <aside id="sidebar" class="sidebar">
         <button id="toggle-sidebar" class="toggle-btn">
-            <span class="arrow">◀</span>
+            <span class="menu-icon">✕</span> {# Icône Burger par défaut #}
         </button>
-        
         <nav class="sidebar-nav">
-            <div class="nav-item active">
-                <span class="icon">🎮</span> <span>TOUS MES JEUX</span>
-            </div>
-            <div class="nav-item">
-                <span class="icon">🔥</span> <span>EN COURS</span>
-            </div>
-            <div class="nav-item">
-                <span class="icon">✅</span> <span>TERMINÉS</span>
-            </div>
-            <div class="nav-item">
-                <span class="icon">⏳</span> <span>LISTE DE SOUHAITS</span>
-            </div>
-        </nav>
+        <div class="nav-item active">
+            <span class="label">Mon étagère</span>
+        </div>
+        <div class="nav-item">
+            <span class="label">Recherche un collectionneur</span>
+        </div>
+        <div class="nav-item">
+            <span class="label">Bibliothèque général</span>
+        </div>
+        <div class="nav-item">
+            <span class="label">Paramètre</span>
+        </div>
+    </nav>
     </aside>
 
-    {# --- 2. CONTENU PRINCIPAL --- #}
+    {# --- 2. ZONE DE CONTENU (À DROITE) --- #}
     <section class="shelf-main">
         
+        {# C'est ici qu'on met le titre de la page ! #}
         <header class="shelf-page-header">
-            <h1>MON ÉTAGÈRE</h1>
+            <h1>Mon étagère</h1>
+            <button class="btn-neon btn-neon-orange rounded-3 px-4 py-2">
+                + AJOUTER UN JEU
+            </button>
         </header>
 
+        {# Zone des jeux #}
         <div class="shelf-grid">
-            <p style="color: rgba(255,255,255,0.5); font-family: 'Roboto';">
-                VOTRE ÉTAGÈRE EST VIDE. COMMENCEZ PAR AJOUTER UN JEU !
-            </p>
+            <div class="empty-state-box">
+                <h2>VOTRE ÉTAGÈRE EST VIDE</h2>
+            </div>
         </div>
 
+        {# Barre de contrôle basse #}
         {# --- 3. BARRE DE RECHERCHE ET FILTRES (BAS) --- #}
         <footer class="shelf-controls">
             <div class="search-container">
                 <input type="text" placeholder="RECHERCHER UN JEU..." class="pixel-input">
             </div>
-            <div class="filters-container">
-                <select class="pixel-select">
-                    <option>TOUS LES STATUTS</option>
-                    <option>EN COURS</option>
-                    <option>TERMINÉ</option>
-                </select>
+            
+            {# 🚀 NOUVEAUX FILTRES EN LIGNE #}
+            <div class="inline-filters">
+                <button class="filter-btn active">TOUS</button>
+                <button class="filter-btn">EN COURS</button>
+                <button class="filter-btn">TERMINÉS</button>
+                <button class="filter-btn">PLATINÉS</button>
             </div>
         </footer>
 

@@ -4,21 +4,21 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}LootShelf{% endblock %}</title>
-        <link rel=\"icon\" href=\"{{ asset('favicon.ico') }}\">
+        <link rel="icon" href="{{ asset('favicon.ico') }}">
         
         {% block stylesheets %}
             {{ importmap('app') }}
         {% endblock %}
     </head>
 
-    {# GESTION DU FOND DYNAMIQUE #}
+    {# --- 1. LOGIQUE DU FOND DYNAMIQUE --- #}
     {% set current_route = app.request.attributes.get('_route') %}
     {% set outside_routes = ['app_home', 'app_register', 'app_login'] %}
     
     <body class="{% if current_route in outside_routes %}bg-outside{% else %}bg-inside{% endif %}">
         <div class="app-wrapper">
             
-            {# HEADER COMMUN #}
+            {# --- 2. HEADER GLOBAL DYNAMIQUE --- #}
             <header class="head">
                 <div class="logo-area">
                     <a href="{{ path('app_home') }}">
@@ -28,54 +28,68 @@
                 
                 <nav class="nav-links">
                     {% if app.user %}
-                        {# --- UTILISATEUR CONNECTÉ --- #}
+                        {# 🟢 AFFICHAGE SI CONNECTÉ (Pseudo + Menu Déroulant) #}
                         <div class="user-menu">
                             <span class="pseudo-text">{{ app.user.pseudo|upper }} ▼</span>
                             
                             <div class="dropdown-content">
-                                <a href="{{ path('app_shelf') }}">🎮 MON ÉTAGÈRE</a>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <a href="{{ path('app_admin_dashboard') }}" style="color: var(--neon-green) !important;">🛠️ DASHBOARD ADMIN</a>
+                                <hr class="dropdown-divider">
+                            {% endif %}
+
+                                <a href="{{ path('app_etagere') }}">🎮 MON ÉTAGÈRE</a>
                                 <a href="{{ path('app_logout') }}">🚪 DÉCONNEXION</a>
                             </div>
                         </div>
                     {% else %}
-                        {# --- VISITEUR --- #}
+                        {# 🔴 AFFICHAGE SI VISITEUR (Boutons classiques) #}
                         <a href="{{ path('app_register') }}" class="btn-neon btn-neon-pink rounded-3 px-4 py-2">S'INSCRIRE</a>
                         <a href="{{ path('app_home') }}#login" id="login-trigger" class="btn-neon btn-neon-blue rounded-3 px-4 py-2">SE CONNECTER</a>
                     {% endif %}
                 </nav>
             </header>
 
-            {# ZONE DE CONTENU (On ne touche pas à main-content !) #}
+            {# --- 3. ZONE DE CONTENU (Injecté par les autres fichiers) --- #}
             <main class="main-content">
                 {% block body %}{% endblock %}
             </main>
 
-            {# FOOTER COMMUN #}
+            {# --- 4. FOOTER GLOBAL --- #}
             <footer class="foot">
                 <p class="text-foot">2026 LootShelf | Powered by Alexis BAIL</p>
             </footer>
         </div>
 
-        {# MODALE DE CONNEXION GLOBALE #}
+        {# --- 5. MODALE DE CONNEXION GLOBALE --- #}
         <div id="loginModal" class="modal-overlay" style="display:none;">
             <div class="modal-container">
                 <span class="close-modal">&times;</span>
+        
                 <form action="{{ path('app_login') }}" method="post">
                     <h2 class="modal-title">CONNEXION</h2>
+        
                     <div class="input-wrapper">
                         <label>Email</label>
-                        <input type="email" name="_username" class="input-pixel" placeholder="ton-mail@exemple.com" required autofocus>
+                        <input type="email" name="email" class="input-pixel" placeholder="ton-mail@exemple.com" required autofocus>
                     </div>
+
                     <div class="input-wrapper" style="margin-top: 15px;">
                         <label>Mot de passe</label>
-                        <input type="password" name="_password" class="input-pixel" placeholder="••••••••" required>
+                        <input type="password" name="password" class="input-pixel" placeholder="••••••••" required>
                     </div>
+
                     <div class="terms-wrapper" style="margin-top: 15px; margin-bottom: 15px;">
                         <input type="checkbox" id="remember_me" name="_remember_me" checked>
                         <label for="remember_me" style="cursor: pointer;">SE SOUVENIR DE MOI</label>
                     </div>
+
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-                    <button type="submit" class="btn-signin-neon">SIGN IN</button>
+
+                    <button type="submit" class="btn-signin-neon">
+                        CONNEXION
+                    </button>
+        
                     <div class="modal-footer">
                         <a href="#" class="link-forgot-pixel">Mot de passe oublié ?</a>
                     </div>
@@ -83,6 +97,8 @@
             </div>
         </div>
 
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            {# Les scripts sont chargés via importmap dans le head #}
+        {% endblock %}
     </body>
 </html>

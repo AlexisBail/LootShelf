@@ -6,6 +6,7 @@
     --neon-blue: #00D1FF;
     --neon-green: #39FF14;
     --dark-purple: #1A0B2E;
+    --neon-orange: #e0a21b;
 }
 
 /* BASE & TYPOGRAPHIE */
@@ -24,14 +25,15 @@ body {
 .app-wrapper {
     display: flex;
     flex-direction: column;
-    height: 100vh; /* L'app fait pile la hauteur de l'écran */
+    height: 100vh; /* Toute la hauteur de l'écran */
+    width: 100vw;
+    overflow: hidden; /* On empêche le scroll sur le body entier */
 }
 
 .main-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centre tout le contenu verticalement */
     overflow: hidden;
 }
 
@@ -82,6 +84,8 @@ h2 {
     align-items: center;
     height: 70px;
     padding: 0 30px;
+    flex-shrink: 0; /* Il ne doit jamais s'écraser */
+    z-index: 1000;
 }
 
 .nav-links {
@@ -299,6 +303,8 @@ h2 {
     text-align: center;
     background: var(--dark-purple); 
     border-top: 2px solid rgba(255, 255, 255, 0.1); 
+    height: 50px; /* On fixe la hauteur du footer */
+    flex-shrink: 0;
 }
 
 .text-foot {
@@ -323,7 +329,7 @@ h2 {
     align-items: center;
     justify-content: center;
     flex: 1;
-    padding: 20px;
+    padding: 75px;
     margin-top: -30px;
 }
 
@@ -467,71 +473,103 @@ h2 {
 }
 
 /* ==========================================================================
-   8. PAGE ÉTAGÈRE (DASHBOARD)
+   PAGE ÉTAGÈRE (DASHBOARD)
    ========================================================================== */
 
 /* Le conteneur principal de l'étagère qui respecte le header et le footer */
 .shelf-layout {
     display: flex;
-    /* On force la hauteur à prendre l'écran moins le Header(70px) et le Footer(50px) */
-    height: calc(100vh - 70px - 50px); 
-    width: 100vw;
+    height: 100%; /* Prend 100% de .main-content */
+    width: 100%;
     overflow: hidden;
+    /* Plus de margin-top ici ! */
 }
 
-/* --- SIDEBAR --- */
+/* --- SIDEBAR CONFIGURATION --- */
 .sidebar {
     width: 250px;
-    background: rgba(26, 11, 46, 0.9);
-    border-right: 2px solid var(--neon-blue);
-    transition: width 0.3s ease;
+    background: rgba(26, 11, 46, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
-    padding-top: 20px;
-    flex-shrink: 0; /* Empêche la sidebar de s'écraser */
+    padding-top: 60px; /* Espace pour le bouton en haut */
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
 }
 
+/* ÉTAT FERMÉ */
 .sidebar.closed {
-    width: 60px;
+    width: 60px; /* Juste assez pour le bouton burger */
 }
 
-.sidebar.closed span {
-    display: none; /* Cache le texte quand fermé */
+/* Masquer le texte et les icônes du menu quand c'est fermé */
+.sidebar.closed .sidebar-nav {
+    opacity: 0;
+    pointer-events: none;
 }
 
+/* LE BOUTON TOGGLE (BURGER / CROIX) */
 .toggle-btn {
     position: absolute;
-    right: -15px;
-    top: 20px;
-    background: var(--neon-blue);
+    top: 15px;
+    right: 15px; /* Position par défaut (quand ouvert) */
+    background: transparent;
     border: none;
-    border-radius: 50%;
+    color: white;
+    font-size: 2rem;
     cursor: pointer;
-    z-index: 10;
-    width: 30px;
-    height: 30px;
+    z-index: 110;
+    transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--dark-purple);
+    width: 30px;
+    height: 30px;
 }
+
+/* Repositionner le bouton au centre quand la barre est fermée */
+.sidebar.closed .toggle-btn {
+    right: 15px; /* Il reste à 15px du bord droit des 60px, donc centré */
+}
+
+
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 0 15px;
+    gap: 10px;
+    padding: 0 10px;
+    transition: opacity 0.2s ease;
+}
+
+/* On s'assure que les labels ne dépassent pas */
+.label {
+    white-space: nowrap;
+    font-family: 'Roboto', cursive;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
     gap: 15px;
+    padding: 15px;
     color: white;
     font-size: 0.7rem;
     cursor: pointer;
-    padding: 10px;
+    padding: 10px 15px;
+    width: 100%;
     border-radius: 8px;
     transition: background 0.2s;
+    box-sizing: border-box; /* Inclut le padding dans la largeur */
+    font-size: 0.6rem;
+}
+
+.nav-item span {
+    flex: 1;               /* Force le texte à prendre toute la place et à revenir à la ligne */
+    font-size: 190%;     /* Ajuste selon ton besoin */
+    line-height: 1.3;      /* Espace entre les lignes pour la lisibilité */
+    white-space: normal;
 }
 
 .nav-item:hover, .nav-item.active {
@@ -548,15 +586,38 @@ h2 {
 }
 
 .shelf-page-header {
-    padding: 20px;
+    padding: 20px 40px;
+    display: flex; /* C'est ça qui force à être sur la même ligne ! */
+    
+    justify-content: space-between; /* Titre à gauche, bouton à droite */
+    align-items: center; /* Centré verticalement */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    
 }
 
 .shelf-page-header h1 {
     font-size: 1.2rem;
     margin: 0;
-    transform: none; /* Annule l'effet de l'accueil */
-    text-align: left;
+    letter-spacing: 2px;
+    transform: none ;
+}
+
+.btn-neon-orange {
+    border-color: var(--neon-orange) !important;
+}
+
+.btn-neon-orange:hover {
+    color: #fccb71 !important; /* Rose vif au survol */
+    box-shadow: 0 0 15px rgba(255, 187, 0, 0.5);
+    transform: scale(1.05);
+}
+
+/* Ajustement du bouton en haut à droite */
+.shelf-page-header .btn-neon {
+    font-size: 0.7rem;
+    padding: 10px 20px;
+    margin: 0;
+    white-space: nowrap; /* Empêche le texte du bouton de revenir à la ligne */
 }
 
 .shelf-grid {
@@ -571,11 +632,9 @@ h2 {
 /* --- BARRE DE RECHERCHE ET FILTRES (BAS) --- */
 .shelf-controls {
     display: flex;
-    padding: 20px;
-    background: rgba(26, 11, 46, 0.8);
-    gap: 20px;
-    align-items: center;
-    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 20px 40px; /* On passe à 40px sur les côtés pour aligner avec le haut */
+    align-items: center; 
+    justify-content: space-between; /* 🚀 Pousse la recherche à gauche et les filtres à droite */
 }
 
 .pixel-input {
@@ -587,25 +646,44 @@ h2 {
     width: 300px;
 }
 
-.pixel-select {
-    background: var(--dark-purple);
-    color: white;
-    border: 2px solid var(--neon-blue);
-    padding: 10px;
-    border-radius: 8px;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 0.6rem;
+/* --- NOUVEAUX FILTRES EN LIGNE --- */
+.inline-filters {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.filter-btn {
+    border: none;
+    font-family: 'Roboto', cursive;
     cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 30px;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    border: 3px solid #B278FF;
+}
+
+/* Effet au survol */
+.filter-btn:hover {
+    color: white;
+    background: #3C2956;
+}
+
+/* Le filtre actuellement sélectionné (Celui qui a la classe 'active') */
+.filter-btn.active {
+    color: white;
+    background: #3C2956;
 }
 
 /* --- MENU UTILISATEUR DÉROULANT (HEADER BASE) --- */
 .user-menu {
+    color: white;
     position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.8rem;
 }
 
 .dropdown-content {
@@ -628,6 +706,8 @@ h2 {
     text-decoration: none;
     margin-bottom: 15px;
     font-size: 0.6rem;
+    top: 100%; /* Juste en dessous du header */
+    margin-top: 5px; /* Un petit décalage visuel propre */
 }
 
 .dropdown-content a:last-child {
@@ -639,14 +719,145 @@ h2 {
     text-shadow: 0 0 5px currentColor;
 }
 
-.user-menu:hover .dropdown-content {
-    display: block;
+/* ✅ AJOUTE cette ligne à la place : */
+.user-menu.active .dropdown-content {
+    display: block; /* Le menu ne s'affiche que si la classe 'active' est présente */
 }
 
-/* 👇 C'EST ICI QUE ÇA SE PASSE ! 👇 */
 /* Le fond pour l'Étagère et l'espace membre */
 .bg-inside {
-    /* Remplace 'nouveau_fond.png' par le nom exact de ton image */
     background: url('../image/fond2.png') no-repeat center center fixed;
     background-size: cover;
+}
+
+/* ==========================================================================
+   PAGE ADMIN (DASHBOARD)
+   ========================================================================== */
+/* On force le changement de style pour la page admin */
+.admin-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #f4f7f6 !important; /* Gris très clair pro */
+    color: #333 !important;
+    font-family: 'Roboto', sans-serif !important; /* Police clean */
+    display: flex;
+    z-index: 9999; /* Par-dessus tout */
+}
+
+/* Sidebar Admin */
+.admin-sidebar {
+    width: 260px;
+    background: #2c3e50; /* Bleu nuit pro */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+}
+
+.admin-logo {
+    font-size: 1.2rem;
+    padding: 0 20px 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.admin-logo span { 
+    color: var(--neon-blue); 
+}
+
+.admin-sidebar nav a {
+    padding: 15px 25px;
+    color: #bdc3c7;
+    text-decoration: none;
+    display: block;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+}
+
+.admin-sidebar nav a:hover, 
+.admin-sidebar nav a.active {
+    background: #34495e;
+    color: white;
+    border-left: 4px solid var(--neon-blue);
+}
+
+.admin-sidebar 
+.divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 20px 0;
+}
+
+/* Contenu Principal */
+.admin-main {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 30px;
+}
+
+.admin-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+}
+
+.admin-topbar h2 { 
+    transform: none !important; 
+    color: #2c3e50 !important; 
+    font-size: 1.5rem; 
+}
+
+/* Cartes Stats */
+.admin-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.stat-icon {
+    font-size: 2rem;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #f0f3f5;
+}
+
+.stat-label { 
+    display: block; 
+    color: #7f8c8d; 
+    font-size: 0.8rem; 
+}
+
+.stat-value { 
+    display: block; 
+    font-size: 1.5rem; 
+    font-weight: bold; 
+    color: #2c3e50; 
+}
+
+.content-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }

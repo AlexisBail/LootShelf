@@ -1,3 +1,4 @@
+# config/packages/security.yaml
 security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
@@ -13,44 +14,42 @@ security:
 
     firewalls:
         dev:
-            # Ensure dev tools and static assets are always allowed
+            # Assure que les outils de dev et les assets sont toujours accessibles
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
         main:
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\AppAuthenticator
+            
             logout:
                 path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
+                # 🚀 REDIRECTION APRÈS DÉCONNEXION : On retourne à l'accueil
+                target: app_home
 
             remember_me:
                 secret: '%kernel.secret%' # Utilise la clé secrète de ton projet
-                lifetime: 604800 # Durée de vie du cookie en secondes (ici 1 semaine)
+                lifetime: 604800 # 1 semaine
                 path: /
                 # by default, the feature is enabled by checking a checkbox in the
                 # login form, uncomment the following line to always enable it.
                 #always_remember_me: true
 
-            # Activate different ways to authenticate:
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
-    # Note: Only the *first* matching rule is applied
+    # Note: Seule la *première* règle qui correspond est appliquée
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # 🚀 PROTECTION DE L'ÉTAGÈRE : 
+        # On interdit l'accès à /etagere aux personnes non connectées.
+        # Ils seront automatiquement redirigés vers la page de login s'ils essaient d'y aller.
+        - { path: ^/etagere, roles: ROLE_USER }
+        
+        - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:
     security:
         password_hashers:
-            # Password hashers are resource-intensive by design to ensure security.
-            # In tests, it's safe to reduce their cost to improve performance.
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
                 algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+                cost: 4 # Valeur minimale pour bcrypt
+                time_cost: 3 # Valeur minimale pour argon
+                memory_cost: 10 # Valeur minimale pour argon

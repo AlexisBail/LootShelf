@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block body %}
+<div class="admin-page">
+    {# 1. SIDEBAR ADMIN #}
+    <aside class="admin-sidebar">
+        <div class="admin-logo">LOOT<span>ADMIN</span></div>
+        <nav>
+            <a href="{{ path('app_admin_dashboard') }}" class="active">📊 Dashboard</a>
+            <a href="#">👥 Utilisateurs</a>
+            <a href="#">🎮 Catalogue Jeux</a>
+            <a href="#">🚩 Signalements</a>
+            <div class="divider"></div>
+            <a href="{{ path('app_home') }}">🏠 Retour au site</a>
+        </nav>
+    </aside>
+
+    {# 2. CONTENU PRINCIPAL #}
+    <main class="admin-main">
+        <header class="admin-topbar">
+            <h2>Tableau de bord</h2>
+            <div class="admin-user-info">Connecté en tant que <strong>{{ app.user.pseudo }}</strong></div>
+        </header>
+
+        <section class="admin-stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon user-icon">👥</div>
+                <div class="stat-details">
+                    <span class="stat-label">Utilisateurs</span>
+                    <span class="stat-value">{{ totalUsers }}</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon game-icon">🎮</div>
+                <div class="stat-details">
+                    <span class="stat-label">Jeux total</span>
+                    <span class="stat-value">{{ totalGames }}</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon alert-icon">🚩</div>
+                <div class="stat-details">
+                    <span class="stat-label">Alertes</span>
+                    <span class="stat-value">0</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-recent-content">
+            <div class="content-box">
+                <h3>Derniers inscrits</h3>
+                {# On pourra mettre un tableau ici plus tard #}
+                <p>Liste des utilisateurs à venir...</p>
+            </div>
+        </section>
+    </main>
+</div>
+{% endblock %}
