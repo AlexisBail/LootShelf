@@ -1,4 +1,4 @@
-/* 1. IMPORTS & VARIABLES */
+/* IMPORTS & VARIABLES */
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@300;400;700&display=swap');
 
 :root {
@@ -8,7 +8,7 @@
     --dark-purple: #1A0B2E;
 }
 
-/* 2. BASE & TYPOGRAPHIE */
+/* BASE & TYPOGRAPHIE */
 body {
     margin: 0;
     padding: 0;
@@ -48,7 +48,7 @@ h1 {
     padding-bottom: 20px;
 }
 
-/* 2. LE SOUS-TITRE (H2) */
+/* LE SOUS-TITRE (H2) */
 h2 {
     font-family: 'Press Start 2P', cursive !important;
     color: white !important;
@@ -58,7 +58,7 @@ h2 {
     margin-bottom: 40px;
 }
 
-/* 3. LE PARAGRAPHE (ROBOTO) */
+/* LE PARAGRAPHE (ROBOTO) */
 .texte-accueil {
     font-family: 'Roboto', sans-serif !important;
     font-size: 1.1rem;
@@ -73,7 +73,7 @@ h2 {
 }
 
 /* ========================================================== */
-/* 3. LAYOUT (HEADER & FOOTER) */
+/* LAYOUT (HEADER & FOOTER) */
 .head {
     background: var(--dark-purple);
     border-bottom: 2px solid rgba(255, 255, 255, 0.1); 
@@ -112,7 +112,7 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* 5. LES BOUTONS NÉONS */
+/* LES BOUTONS NÉONS */
 .btn-neon {
     text-decoration: none !important;
     font-family: 'Press Start 2P', cursive !important;
@@ -124,7 +124,7 @@ h2 {
     background: linear-gradient(to bottom, #4B0082, #001F3F) !important;
 }
 
-/* --- BOUTON S'INSCRIRE --- */
+/* BOUTON S'INSCRIRE */
 .btn-neon-pink {
     border-color: var(--neon-pink) !important;
 }
@@ -146,7 +146,7 @@ h2 {
     transform: scale(1.05);
 }
 
-/* ===== 6. MODALE DE CONNEXION (POPUP) ===== */
+/* MODALE DE CONNEXION (POPUP) */
 
 .modal-overlay {
     position: fixed;
@@ -171,7 +171,7 @@ h2 {
     box-sizing: border-box;
 }
 
-/* --- TITRE --- */
+/* TITRE */
 .modal-title {
     font-family: 'Press Start 2P', cursive ;
     font-size: 1.2rem ;
@@ -181,7 +181,7 @@ h2 {
     letter-spacing: 1px;
 }
 
-/* --- CROIX DE FERMETURE --- */
+/* CROIX DE FERMETURE */
 .close-modal {
     position: absolute;
     top: 15px; right: 20px;
@@ -198,7 +198,7 @@ h2 {
     color: white;
 }
 
-/* --- FORMULAIRE --- */
+/* FORMULAIRE */
 .input-wrapper {
     text-align: left;
     margin-bottom: 20px;
@@ -227,7 +227,7 @@ h2 {
     box-sizing: border-box;
 }
 
-/* --- BOUTON SIGN IN --- */
+/* BOUTON SIGN IN */
 .btn-signin-neon {
     width: 100%;
     height: 55px; /* Bouton bien massif */
@@ -252,7 +252,7 @@ h2 {
     box-shadow: 0 0 20px rgba(57, 255, 20, 0.6);
 }
 
-/* --- LIEN MOT DE PASSE OUBLIÉ --- */
+/* LIEN MOT DE PASSE OUBLIÉ */
 .modal-footer {
     margin-top: 20px;
     text-align: center;
@@ -271,7 +271,7 @@ h2 {
     text-shadow: 0 0 5px var(--neon-blue);
 }
 
-/* --- BOUTON VOIR LES ÉTAGÈRES --- */
+/* BOUTON VOIR LES ÉTAGÈRES */
 .btn-neon-green {
     font-size: 1rem; /* Un peu plus grand pour l'accueil */
     border-color: var(--neon-green) !important;
@@ -283,7 +283,7 @@ h2 {
     transform: scale(1.05);
 }
 
-/* 6. DIVERS */
+/* DIVERS */
 .pixelated { 
     image-rendering: pixelated; 
 }
@@ -315,7 +315,7 @@ h2 {
 }
 
 /* ========================================================== */
-/* 7. PAGE REGISTER (INSCRIPTION) */
+/* PAGE REGISTER (INSCRIPTION) */
 
 .main-container {
     display: flex;
@@ -354,7 +354,7 @@ h2 {
     text-align: center;
 }
 
-/* --- STRUCTURE DU FORMULAIRE --- */
+/* STRUCTURE DU FORMULAIRE */
 .form-fields {
     width: 100%;
     max-width: 550px;
@@ -375,7 +375,7 @@ h2 {
     width: 100%;
 }
 
-/* --- STYLE DES INPUTS --- */
+/* STYLE DES INPUTS */
 .input-neon {
     width: 100%;
     height: 50px;
@@ -396,7 +396,7 @@ h2 {
     transform: scale(1.02);
 }
 
-/* --- CHECKBOX (TERMS) --- */
+/* CHECKBOX (TERMS) */
 .terms-wrapper {
     display: flex;
     align-items: center;
@@ -415,7 +415,7 @@ h2 {
     accent-color: var(--neon-blue);
 }
 
-/* --- BOUTON DE CONFIRMATION --- */
+/* BOUTON DE CONFIRMATION */
 .btn-confirm-neon {
     align-self: center;
     margin-top: 10px;
@@ -436,7 +436,7 @@ h2 {
     transform: scale(1.05);
 }
 
-/* --- PIED DE PAGE --- */
+/* PIED DE PAGE */
 .footer-text {
     color: white;
     text-align: center;
@@ -464,4 +464,189 @@ h2 {
     color: #ff4444;
     font-size: 0.6rem;
     text-align: center;
+}
+
+/* ==========================================================================
+   8. PAGE ÉTAGÈRE (DASHBOARD)
+   ========================================================================== */
+
+/* Le conteneur principal de l'étagère qui respecte le header et le footer */
+.shelf-layout {
+    display: flex;
+    /* On force la hauteur à prendre l'écran moins le Header(70px) et le Footer(50px) */
+    height: calc(100vh - 70px - 50px); 
+    width: 100vw;
+    overflow: hidden;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    width: 250px;
+    background: rgba(26, 11, 46, 0.9);
+    border-right: 2px solid var(--neon-blue);
+    transition: width 0.3s ease;
+    position: relative;
+    padding-top: 20px;
+    flex-shrink: 0; /* Empêche la sidebar de s'écraser */
+}
+
+.sidebar.closed {
+    width: 60px;
+}
+
+.sidebar.closed span {
+    display: none; /* Cache le texte quand fermé */
+}
+
+.toggle-btn {
+    position: absolute;
+    right: -15px;
+    top: 20px;
+    background: var(--neon-blue);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dark-purple);
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 15px;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: white;
+    font-size: 0.7rem;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.nav-item:hover, .nav-item.active {
+    background: rgba(0, 209, 255, 0.2);
+    border-left: 3px solid var(--neon-blue);
+}
+
+/* --- CONTENU DE L'ÉTAGÈRE (ZONE DROITE) --- */
+.shelf-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.shelf-page-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.shelf-page-header h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    transform: none; /* Annule l'effet de l'accueil */
+    text-align: left;
+}
+
+.shelf-grid {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto; /* Permet de scroller les jeux s'il y en a beaucoup */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- BARRE DE RECHERCHE ET FILTRES (BAS) --- */
+.shelf-controls {
+    display: flex;
+    padding: 20px;
+    background: rgba(26, 11, 46, 0.8);
+    gap: 20px;
+    align-items: center;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.pixel-input {
+    background: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-family: 'Roboto', sans-serif;
+    width: 300px;
+}
+
+.pixel-select {
+    background: var(--dark-purple);
+    color: white;
+    border: 2px solid var(--neon-blue);
+    padding: 10px;
+    border-radius: 8px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 0.6rem;
+    cursor: pointer;
+}
+
+/* --- MENU UTILISATEUR DÉROULANT (HEADER BASE) --- */
+.user-menu {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.8rem;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    margin-top: 15px;
+    background: var(--dark-purple);
+    border: 2px solid var(--neon-pink);
+    border-radius: 8px;
+    padding: 10px;
+    min-width: 180px;
+    z-index: 1000;
+}
+
+.dropdown-content a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin-bottom: 15px;
+    font-size: 0.6rem;
+}
+
+.dropdown-content a:last-child {
+    margin-bottom: 0;
+    color: var(--neon-pink);
+}
+
+.dropdown-content a:hover {
+    text-shadow: 0 0 5px currentColor;
+}
+
+.user-menu:hover .dropdown-content {
+    display: block;
+}
+
+/* 👇 C'EST ICI QUE ÇA SE PASSE ! 👇 */
+/* Le fond pour l'Étagère et l'espace membre */
+.bg-inside {
+    /* Remplace 'nouveau_fond.png' par le nom exact de ton image */
+    background: url('../image/fond2.png') no-repeat center center fixed;
+    background-size: cover;
 }

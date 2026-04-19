@@ -26,8 +26,8 @@ security:
                 # target: app_any_route
 
             remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800
+                secret: '%kernel.secret%' # Utilise la clé secrète de ton projet
+                lifetime: 604800 # Durée de vie du cookie en secondes (ici 1 semaine)
                 path: /
                 # by default, the feature is enabled by checking a checkbox in the
                 # login form, uncomment the following line to always enable it.

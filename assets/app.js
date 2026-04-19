@@ -60,6 +60,17 @@ function checkHash() {
     }
 }
 
+// Dans ton app.js existant ou via la délégation d'événements
+document.addEventListener('click', (e) => {
+    // Toggle Sidebar
+    const toggleBtn = e.target.closest('#toggle-sidebar');
+    if (toggleBtn) {
+        document.getElementById('sidebar').classList.toggle('closed');
+        const arrow = toggleBtn.querySelector('.arrow');
+        arrow.textContent = arrow.textContent === '◀' ? '▶' : '◀';
+    }
+});
+
 // On lance la vérification au chargement normal ET au chargement Turbo
 document.addEventListener('DOMContentLoaded', checkHash);
 document.addEventListener('turbo:load', checkHash);
