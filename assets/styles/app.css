@@ -421,6 +421,64 @@ h2 {
     accent-color: var(--neon-blue);
 }
 
+/* --- INFO-BULLE MOT DE PASSE --- */
+.password-field-container {
+    position: relative; /* Pour que l'info-bulle se cale par rapport à ce bloc */
+}
+
+.password-help-tooltip {
+    display: none; /* Caché par défaut */
+    position: absolute;
+    left: 105%; /* Positionné à droite du champ */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 250px;
+    background: rgba(26, 11, 46, 0.95);
+    border: 2px solid var(--neon-blue);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 209, 255, 0.4);
+    z-index: 100;
+}
+
+/* Le petit triangle qui pointe vers le champ */
+.password-help-tooltip::before {
+    content: '';
+    position: absolute;
+    right: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent var(--neon-blue) transparent transparent;
+}
+
+.tooltip-title {
+    color: var(--neon-blue);
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 209, 255, 0.3);
+    padding-bottom: 5px;
+}
+
+.password-help-tooltip ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.password-help-tooltip li {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.75rem;
+    color: #ccc;
+    margin-bottom: 5px;
+}
+
+/* Quand la contrainte est validée (on pourra l'ajouter en JS plus tard) */
+.password-help-tooltip li.valid {
+    color: var(--neon-green);
+}
+
 /* BOUTON DE CONFIRMATION */
 .btn-confirm-neon {
     align-self: center;
@@ -860,4 +918,20 @@ h2 {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+/* FORCE L'AFFICHAGE VISUEL */
+.modal.show {
+    display: block !important;
+    opacity: 1 !important;
+    background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent pour faire ressortir la modale */
+}
+
+.modal-backdrop.show {
+    opacity: 0.5 !important;
+    z-index: 1040 !important;
+}
+
+.modal {
+    z-index: 1050 !important; /* Passe par dessus tout */
 }

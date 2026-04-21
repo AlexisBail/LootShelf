@@ -4,14 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
-use App\Security\AppAuthenticator; // 🚀 IMPORTANT : Import de ton Authenticator
+use App\Security\AppAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface; // 🚀 IMPORTANT : Pour l'auto-login
+use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+// 🚀 Import indispensable pour lier le bon limiteur
+use Symfony\Component\DependencyInjection\Attribute\Autowire; 
 
 class RegistrationController extends AbstractController
 {
@@ -19,13 +22,28 @@ class RegistrationController extends AbstractController
     public function register(
         Request $request, 
         UserPasswordHasherInterface $userPasswordHasher, 
-        UserAuthenticatorInterface $userAuthenticator, // 👈 Ajouté
-        AppAuthenticator $authenticator,               // 👈 Ajouté
-        EntityManagerInterface $entityManager
+        UserAuthenticatorInterface $userAuthenticator, 
+        AppAuthenticator $authenticator, 
+        EntityManagerInterface $entityManager,
+        
+        // 🛡️ On force l'injection du service spécifique "limiter.inscription_limiter"
+        #[Autowire(service: 'limiter.inscription_limiter')] 
+        RateLimiterFactory $inscriptionLimiter 
     ): Response {
+        
+        // --- 1. SÉCURITÉ : LIMITEUR DE DÉBIT (RATE LIMITER) ---
+        // On identifie l'utilisateur par son adresse IP
+        $limiter = $inscriptionLimiter->create($request->getClientIp());
+
+        // On vérifie si l'utilisateur a encore le droit de tenter une inscription
+        if (false === $limiter->consume(1)->isAccepted()) {
+            $this->addFlash('danger', 'Trop de tentatives ! Votre accès est bloqué pendant 15 minutes.');
+            return $this->redirectToRoute('app_home'); 
+        }
+
+        // --- 2. LOGIQUE D'INSCRIPTION ---
         $user = new Utilisateur();
-        // ON AJOUTE LA DATE D'INSCRIPTION ICI AUTOMATIQUEMENT
-        $user->setDateInscription(new \DateTime());
+        $user->setDateInscription(new \DateTime()); // Date auto
 
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -42,9 +60,8 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // 🚀 MODIFICATION ICI : On connecte l'utilisateur automatiquement
-            // Une fois connecté, il sera redirigé selon ce qui est écrit dans ton AppAuthenticator
-            // (qui redirige normalement vers 'app_etagere' comme on l'a configuré ensemble)
+            // --- 3. CONNEXION AUTOMATIQUE (AUTO-LOGIN) ---
+            // Une fois inscrit, il est direct connecté et envoyé vers l'étagère
             return $userAuthenticator->authenticateUser(
                 $user,
                 $authenticator,

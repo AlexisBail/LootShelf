@@ -9,9 +9,13 @@
         <div class="admin-logo">LOOT<span>ADMIN</span></div>
         <nav>
             <a href="{{ path('app_admin_dashboard') }}" class="active">📊 Dashboard</a>
-            <a href="#">👥 Utilisateurs</a>
-            <a href="#">🎮 Catalogue Jeux</a>
-            <a href="#">🚩 Signalements</a>
+            
+            {# Liens déclencheurs de modales Bootstrap #}
+            <a href="#" data-bs-toggle="modal" data-bs-target="#usersModal">👥 Utilisateurs</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#catalogModal">🎮 Catalogue Jeux</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#requestsModal">📥 Demandes d'ajout</a>
+            <a href="#" data-bs-toggle="modal" data-bs-target="#reportsModal">🚩 Signalements</a>
+            
             <div class="divider"></div>
             <a href="{{ path('app_home') }}">🏠 Retour au site</a>
         </nav>
@@ -51,10 +55,116 @@
         <section class="admin-recent-content">
             <div class="content-box">
                 <h3>Derniers inscrits</h3>
-                {# On pourra mettre un tableau ici plus tard #}
-                <p>Liste des utilisateurs à venir...</p>
+                <table class="table table-dark table-hover mt-3">
+                    <thead>
+                        <tr>
+                            <th>Pseudo</th>
+                            <th>Email</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users|slice(0, 5) %}
+                            <tr>
+                                <td>{{ user.pseudo }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.dateInscription|date('d/m/Y') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </section>
     </main>
+</div>
+
+{# --- SYSTÈME DE MODALES --- #}
+
+<div class="modal fade" id="usersModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title">👥 Gestion des Utilisateurs</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Pseudo</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.pseudo }}</td>
+                                <td>{{ user.email }}</td>
+                                <td><button class="btn btn-sm btn-outline-danger">Bannir</button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="catalogModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title">🎮 Catalogue Jeux</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Plateforme</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for jeu in jeux %}
+                            <tr>
+                                <td>{{ jeu.titre }}</td>
+                                <td>{{ jeu.plateformDisponible }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="requestsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-warning">
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">📥 Demandes d'ajout</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Aucune demande en attente.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="reportsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-danger">
+            <div class="modal-header text-danger">
+                <h5 class="modal-title">🚩 Signalements</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <p>Tout est calme !</p>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

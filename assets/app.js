@@ -1,9 +1,7 @@
 import './stimulus_bootstrap.js';
 import './styles/app.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap';
 
-// --- 1. FONCTIONS D'OUVERTURE / FERMETURE DE LA MODALE ---
+// --- 1. MODALE DE CONNEXION (CODE PERSONNALISÉ) ---
 function openModal() {
     const modal = document.getElementById('loginModal');
     if (modal) {
@@ -20,73 +18,119 @@ function closeModal() {
     }
 }
 
-// --- 2. ÉCOUTE GLOBALE DES CLICS (Délégation d'événements) ---
 document.addEventListener('click', (e) => {
+    const modalTrigger = e.target.closest('[data-bs-toggle="modal"]');
     
-    // --- GESTION DE LA MODALE DE CONNEXION ---
-    const loginTrigger = e.target.closest('#login-trigger');
-    if (loginTrigger) {
-        if (window.location.pathname !== '/home' && window.location.pathname !== '/') {
-            return; 
-        }
+    if (modalTrigger) {
         e.preventDefault();
-        openModal();
-    }
-
-    const closeBtn = e.target.closest('.close-modal');
-    if (closeBtn) {
-        closeModal();
-    }
-
-    if (e.target.id === 'loginModal') {
-        closeModal();
-    }
-
-    // --- GESTION DE LA SIDEBAR (Burger / Croix) ---
-    const toggleBtn = e.target.closest('#toggle-sidebar');
-    if (toggleBtn) {
-        const sidebar = document.getElementById('sidebar');
-        const menuIcon = toggleBtn.querySelector('.menu-icon');
-
-        if (sidebar && menuIcon) {
-            sidebar.classList.toggle('closed');
-            if (sidebar.classList.contains('closed')) {
-                menuIcon.textContent = '☰'; 
-            } else {
-                menuIcon.textContent = '✕'; 
+        const targetId = modalTrigger.getAttribute('data-bs-target');
+        const modalElement = document.querySelector(targetId);
+        
+        if (modalElement) {
+            console.log("Tentative d'ouverture manuelle de : " + targetId);
+            
+            // 1. On essaie la méthode propre via Bootstrap
+            if (window.bootstrap) {
+                const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
+                modalInstance.show();
+            }
+            
+            // 2. SÉCURITÉ : Si Bootstrap fait grève, on force le CSS
+            modalElement.classList.add('show');
+            modalElement.style.display = 'block';
+            document.body.classList.add('modal-open');
+            
+            // On crée un backdrop (fond noir) manuel si besoin
+            if (!document.querySelector('.modal-backdrop')) {
+                const backdrop = document.createElement('div');
+                backdrop.className = 'modal-backdrop fade show';
+                document.body.appendChild(backdrop);
             }
         }
     }
 
-    // --- 🚀 NOUVEAUTÉ : GESTION DU MENU UTILISATEUR (CLIC) ---
-    const userMenu = e.target.closest('.user-menu');
-    
-    if (userMenu) {
-        // On vérifie si on a cliqué spécifiquement sur le pseudo (le déclencheur)
-        const isPseudoClick = e.target.closest('.pseudo-text');
-        
-        if (isPseudoClick) {
-            // On bascule l'état du menu
-            userMenu.classList.toggle('active');
+    // Gestion de la fermeture (bouton close ou clic extérieur)
+    if (e.target.closest('[data-bs-dismiss="modal"]') || e.target.classList.contains('modal')) {
+        const activeModal = document.querySelector('.modal.show');
+        if (activeModal) {
+            activeModal.classList.remove('show');
+            activeModal.style.display = 'none';
+            document.body.classList.remove('modal-open');
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) backdrop.remove();
         }
-        // Note : Si on clique sur un lien à l'intérieur du menu, 
-        // la page changera et le menu disparaîtra naturellement.
-    } else {
-        // Si on clique n'importe où en dehors du menu .user-menu, 
-        // on retire la classe 'active' de TOUS les menus utilisateur ouverts
-        document.querySelectorAll('.user-menu.active').forEach(menu => {
-            menu.classList.remove('active');
-        });
+    }
+    
+        // --- FERMETURE DES MODALES (Croix ou Fond) ---
+    if (e.target.closest('.close-modal') || e.target.id === 'loginModal') {
+        closeModal();
+    }
+
+    // --- GESTION DE LA SIDEBAR (Toggle) ---
+    const toggleBtn = e.target.closest('#toggle-sidebar');
+    if (toggleBtn) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('closed');
+            const menuIcon = toggleBtn.querySelector('.menu-icon');
+            if (menuIcon) {
+                menuIcon.textContent = sidebar.classList.contains('closed') ? '☰' : '✕';
+            }
+        }
     }
 });
 
-// --- 3. DÉTECTION DU LIEN (#login) DANS L'URL ---
-function checkHash() {
-    if (window.location.hash === '#login') {
-        openModal();
-        history.replaceState(null, null, window.location.pathname);
-    }
+
+// --- 3. VALIDATION DU MOT DE PASSE (INFO-BULLE) ---
+function initPasswordValidation() {
+    const passwordInput = document.querySelector('input[type="password"][name*="plainPassword"]');
+    const tooltip = document.getElementById('password-help');
+
+    if (!passwordInput || !tooltip) return;
+
+    const requirements = {
+        length:  { el: document.getElementById('length'),  regex: /.{12,}/ },
+        upper:   { el: document.getElementById('upper'),   regex: /[A-Z]/ },
+        lower:   { el: document.getElementById('lower'),   regex: /[a-z]/ },
+        number:  { el: document.getElementById('number'),  regex: /[0-9]/ },
+        special: { el: document.getElementById('special'), regex: /[@$!%*?&.]/ }
+    };
+
+    passwordInput.addEventListener('focus', () => tooltip.style.display = 'block');
+    passwordInput.addEventListener('blur', () => tooltip.style.display = 'none');
+
+    passwordInput.addEventListener('input', () => {
+        const value = passwordInput.value;
+        for (const key in requirements) {
+            const item = requirements[key];
+            if (item.el) {
+                if (item.regex.test(value)) {
+                    item.el.classList.add('valid');
+                    item.el.innerHTML = `✅ ${item.el.innerText.substring(2)}`;
+                } else {
+                    item.el.classList.remove('valid');
+                    item.el.innerHTML = `❌ ${item.el.innerText.substring(2)}`;
+                }
+            }
+        }
+    });
 }
 
-document.addEventListener('DOMContentLoaded', checkHash);
-document.addEventListener('turbo:load', checkHash);
+// --- 4. INITIALISATION TURBO ---
+const init = () => {
+    console.log("LootShelf : JavaScript chargé !");
+    
+    // Initialisation des tooltips Bootstrap si présents
+    if (window.bootstrap) {
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+    }
+
+    initPasswordValidation();
+};
+
+// Événements pour que ça marche au premier chargement ET après navigation
+document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('turbo:load', init);
