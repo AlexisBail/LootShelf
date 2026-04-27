@@ -163,7 +163,7 @@ h2 {
 }
 
 .modal-container {
-    background: rgba(26, 11, 46, 0.85);
+    background: rgba(26, 11, 46, 1);
     border: 3px solid;
     border-color: white;
     border-radius: 16px;
@@ -222,7 +222,7 @@ h2 {
     width: 100%;
     height: 50px; /* Plus épais, comme sur Figma */
     background: white;
-    border-radius: 10px; 
+    border-radius: 50px; 
     outline: none; /* Enlève le contour bleu du navigateur au clic */
     padding: 0 20px;
     font-family: 'Roboto', sans-serif;
@@ -666,7 +666,7 @@ h2 {
 
 .btn-neon-orange:hover {
     color: #fccb71 !important; /* Rose vif au survol */
-    box-shadow: 0 0 15px rgba(255, 187, 0, 0.5);
+    box-shadow: 0 0 15px rgba(255, 187, 0, 0.507);
     transform: scale(1.05);
 }
 
@@ -921,17 +921,27 @@ h2 {
 }
 
 /* FORCE L'AFFICHAGE VISUEL */
+/* --- CORRECTIF MODALES ADMIN --- */
+
+/* On force l'affichage quand la classe 'show' est présente */
 .modal.show {
     display: block !important;
     opacity: 1 !important;
-    background-color: rgba(0, 0, 0, 0.7); /* Fond semi-transparent pour faire ressortir la modale */
+    background-color: rgba(0, 0, 0, 0.8) !important; /* Assombrit le fond du dashboard */
 }
 
-.modal-backdrop.show {
-    opacity: 0.5 !important;
-    z-index: 1040 !important;
-}
-
+/* On s'assure que la modale est TOUJOURS au-dessus de la sidebar et du contenu */
 .modal {
-    z-index: 1050 !important; /* Passe par dessus tout */
+    z-index: 9999 !important;
+}
+
+/* On stylise l'intérieur pour qu'il tranche avec ton fond */
+.modal-content {
+    border: 2px solid var(--neon-blue) !important;
+    box-shadow: 0 0 20px rgba(0, 209, 255, 0.3);
+}
+
+/* Pour éviter que le body ne scrolle quand la modale est ouverte */
+body.modal-open {
+    overflow: hidden !important;
 }

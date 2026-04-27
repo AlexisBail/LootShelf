@@ -19,8 +19,33 @@ function closeModal() {
 }
 
 document.addEventListener('click', (e) => {
-    const modalTrigger = e.target.closest('[data-bs-toggle="modal"]');
     
+    // --- A. GESTION DU MENU UTILISATEUR (PSEUDO) ---
+    const userMenu = e.target.closest('.user-menu');
+    const isPseudoClick = e.target.closest('.pseudo-text');
+
+    if (userMenu && isPseudoClick) {
+        // On bascule la classe active pour afficher/cacher le menu
+        userMenu.classList.toggle('active');
+        console.log("Menu utilisateur basculé !");
+    } else if (!userMenu) {
+        // Si on clique n'importe où ailleurs sur la page, on ferme le menu
+        document.querySelectorAll('.user-menu.active').forEach(menu => {
+            menu.classList.remove('active');
+        });
+    }
+
+    // --- B. GESTION DU BOUTON "SE CONNECTER" (ID login-trigger) ---
+    const loginTrigger = e.target.closest('#login-trigger');
+    if (loginTrigger) {
+        if (window.location.pathname === '/' || window.location.pathname === '/home') {
+            e.preventDefault();
+            openModal();
+        }
+    }
+
+    // --- C. FORCE L'OUVERTURE DES MODALES BOOTSTRAP (Admin) ---
+    const modalTrigger = e.target.closest('[data-bs-toggle="modal"]');
     if (modalTrigger) {
         e.preventDefault();
         const targetId = modalTrigger.getAttribute('data-bs-target');
@@ -29,18 +54,16 @@ document.addEventListener('click', (e) => {
         if (modalElement) {
             console.log("Tentative d'ouverture manuelle de : " + targetId);
             
-            // 1. On essaie la méthode propre via Bootstrap
             if (window.bootstrap) {
                 const modalInstance = bootstrap.Modal.getOrCreateInstance(modalElement);
                 modalInstance.show();
             }
             
-            // 2. SÉCURITÉ : Si Bootstrap fait grève, on force le CSS
+            // SÉCURITÉ : Force l'affichage si Bootstrap ne répond pas
             modalElement.classList.add('show');
             modalElement.style.display = 'block';
             document.body.classList.add('modal-open');
             
-            // On crée un backdrop (fond noir) manuel si besoin
             if (!document.querySelector('.modal-backdrop')) {
                 const backdrop = document.createElement('div');
                 backdrop.className = 'modal-backdrop fade show';
@@ -49,8 +72,10 @@ document.addEventListener('click', (e) => {
         }
     }
 
-    // Gestion de la fermeture (bouton close ou clic extérieur)
-    if (e.target.closest('[data-bs-dismiss="modal"]') || e.target.classList.contains('modal')) {
+    // --- D. GESTION DE LA FERMETURE DES MODALES (Bootstrap + Login) ---
+    if (e.target.closest('[data-bs-dismiss="modal"]') || e.target.classList.contains('modal') || e.target.id === 'loginModal' || e.target.closest('.close-modal')) {
+        
+        // Ferme la modale Bootstrap active
         const activeModal = document.querySelector('.modal.show');
         if (activeModal) {
             activeModal.classList.remove('show');
@@ -59,14 +84,12 @@ document.addEventListener('click', (e) => {
             const backdrop = document.querySelector('.modal-backdrop');
             if (backdrop) backdrop.remove();
         }
-    }
-    
-        // --- FERMETURE DES MODALES (Croix ou Fond) ---
-    if (e.target.closest('.close-modal') || e.target.id === 'loginModal') {
+        
+        // Ferme la modale Login personnalisée
         closeModal();
     }
 
-    // --- GESTION DE LA SIDEBAR (Toggle) ---
+    // --- E. GESTION DE LA SIDEBAR (Toggle) ---
     const toggleBtn = e.target.closest('#toggle-sidebar');
     if (toggleBtn) {
         const sidebar = document.getElementById('sidebar');
@@ -120,7 +143,6 @@ function initPasswordValidation() {
 const init = () => {
     console.log("LootShelf : JavaScript chargé !");
     
-    // Initialisation des tooltips Bootstrap si présents
     if (window.bootstrap) {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -131,6 +153,6 @@ const init = () => {
     initPasswordValidation();
 };
 
-// Événements pour que ça marche au premier chargement ET après navigation
+// Événements pour que ça marche au premier chargement ET après navigation Turbo
 document.addEventListener('DOMContentLoaded', init);
 document.addEventListener('turbo:load', init);

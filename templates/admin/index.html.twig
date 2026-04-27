@@ -75,12 +75,43 @@
                 </table>
             </div>
         </section>
+
+        <div>
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary">
+            <div class="modal-header">
+                <h5 class="modal-title">👥 Gestion des Utilisateurs</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-dark">
+                    <thead>
+                        <tr>
+                            <th>Pseudo</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.pseudo }}</td>
+                                <td>{{ user.email }}</td>
+                                <td><button class="btn btn-sm btn-outline-danger">Bannir</button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
     </main>
 </div>
 
 {# --- SYSTÈME DE MODALES --- #}
 
-<div class="modal fade" id="usersModal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="usersModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark text-white border-secondary">
             <div class="modal-header">
@@ -111,7 +142,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="catalogModal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="catalogModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered">
         <div class="modal-content bg-dark text-white border-secondary">
             <div class="modal-header">
@@ -140,7 +171,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="requestsModal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="requestsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content bg-dark text-white border-warning">
             <div class="modal-header">
@@ -154,7 +185,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="reportsModal" tabindex="-1" aria-hidden="true">
+<div class="modal" id="reportsModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bg-dark text-white border-danger">
             <div class="modal-header text-danger">
