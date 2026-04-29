@@ -51,6 +51,9 @@
                 <div style="display:none">
                     {{ form_widget(registrationForm.date_de_naissance, {'value': '2000-01-01'}) }}
                 </div>
+
+                {# TOKEN CSRF MANUEL #}
+                <input type="hidden" name="_token" value="{{ registrationForm._token.vars.value }}">
             </div>
 
             <button type="submit" class="btn-confirm-neon">

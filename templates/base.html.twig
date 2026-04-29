@@ -3,6 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}LootShelf{% endblock %}</title>
         <link rel="icon" href="{{ asset('favicon.ico') }}">
     
@@ -94,6 +95,7 @@
                         <label for="remember_me" style="cursor: pointer;">SE SOUVENIR DE MOI</label>
                     </div>
 
+                    {# TOKEN CSRF MANUEL #}
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
                     <button type="submit" class="btn-signin-neon">

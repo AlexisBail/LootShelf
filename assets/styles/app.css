@@ -949,3 +949,108 @@ h2 {
 body.modal-open {
     overflow: hidden !important;
 }
+
+/* ===== RESPONSIVE MOBILE (SMARTPHONES) - MAX 768PX ===== */
+@media (max-width: 768px) {
+    
+/* Page d'accueil */    
+/* Déblocage du scroll (Vital car les éléments empilés prennent plus de hauteur) */
+body, .app-wrapper {
+    height: auto;
+    min-height: 100vh;
+    width: 100%; /* Force la largeur totale */
+    overflow-y: auto; 
+    overflow-x: hidden; /* Coupe tout ce qui dépasserait à droite */
+}
+
+/* HEADER : On passe tout en colonne */
+.head {
+    flex-direction: column;
+    height: auto;
+    padding: 20px 15px;
+    gap: 15px;
+}
+
+.logo-area img {
+    height: 45px; /* On réduit un tout petit peu le logo */
+}
+
+.nav-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+}
+
+/* Les boutons S'inscrire / Se connecter prennent toute la largeur */
+.nav-links .btn-neon {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 15px !important; /* Force l'écrasement des classes Bootstrap px/py */
+    box-sizing: border-box;
+    font-size: 0.75rem;
+}
+
+/* TEXTES ACCUEIL : On annule le décalage vers le haut et on réduit la taille */
+h1, h2 {
+    transform: none !important; /* Annule le translateY(-40px) du bureau */
+}
+
+h1 {
+    font-size: 0.87rem;
+    padding-bottom: 5px;
+    padding-top: 19px;
+}
+
+h2 {
+    font-size: 0.75rem;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.texte-accueil {
+    font-size: 0.6rem;
+    margin-top: 10px;
+    line-height: 1.6;
+    padding: 0 10px;
+}
+
+/* LE COFFRE : On le rétrécit pour qu'il ne mange pas l'écran */
+.chest-area {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.main-chest {
+    max-width: 180px; /* Taille parfaitement adaptée au mobile */
+}
+
+/* BOUTON "VOIR LES ÉTAGÈRES" : Pleine largeur comme sur ta maquette */
+.cta-area {
+    width: 100%;
+    padding: 0 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.cta-area .btn-neon-green {
+    display: block;
+    width: 100%;
+    text-align: center;
+    padding: 15px !important;
+    font-size: 0.8rem;
+    box-sizing: border-box;
+}
+
+/* FOOTER : Ajustement du texte */
+.foot {
+    height: auto;
+    padding: 10px 0;
+}
+
+.text-foot {
+    font-size: 0.55rem;
+    margin: 5px;
+    line-height: 1.6;
+}
+}
