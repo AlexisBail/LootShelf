@@ -13,7 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
-// 🚀 Import indispensable pour lier le bon limiteur
+// Import indispensable pour lier le bon limiteur
 use Symfony\Component\DependencyInjection\Attribute\Autowire; 
 
 class RegistrationController extends AbstractController
@@ -26,12 +26,12 @@ class RegistrationController extends AbstractController
         AppAuthenticator $authenticator, 
         EntityManagerInterface $entityManager,
         
-        // 🛡️ On force l'injection du service spécifique "limiter.inscription_limiter"
+        // On force l'injection du service spécifique "limiter.inscription_limiter"
         #[Autowire(service: 'limiter.inscription_limiter')] 
         RateLimiterFactory $inscriptionLimiter 
     ): Response {
         
-        // --- 1. SÉCURITÉ : LIMITEUR DE DÉBIT (RATE LIMITER) ---
+        // --- SÉCURITÉ : LIMITEUR DE DÉBIT (RATE LIMITER) ---
         // On identifie l'utilisateur par son adresse IP
         $limiter = $inscriptionLimiter->create($request->getClientIp());
 
@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_home'); 
         }
 
-        // --- 2. LOGIQUE D'INSCRIPTION ---
+        // --- LOGIQUE D'INSCRIPTION ---
         $user = new Utilisateur();
         $user->setDateInscription(new \DateTime()); // Date auto
 
@@ -60,7 +60,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // --- 3. CONNEXION AUTOMATIQUE (AUTO-LOGIN) ---
+            // --- CONNEXION AUTOMATIQUE (AUTO-LOGIN) ---
             // Une fois inscrit, il est direct connecté et envoyé vers l'étagère
             return $userAuthenticator->authenticateUser(
                 $user,

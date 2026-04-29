@@ -9,6 +9,10 @@
     --neon-orange: #e0a21b;
 }
 
+strong {
+    font-weight: 100 !important;
+}
+
 /* BASE & TYPOGRAPHIE */
 body {
     margin: 0;

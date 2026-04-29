@@ -1,7 +1,7 @@
 import './stimulus_bootstrap.js';
 import './styles/app.css';
 
-// --- 1. MODALE DE CONNEXION (CODE PERSONNALISÉ) ---
+// --- MODALE DE CONNEXION ---
 function openModal() {
     const modal = document.getElementById('loginModal');
     if (modal) {
